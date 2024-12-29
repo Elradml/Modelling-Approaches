@@ -1,0 +1,38 @@
+clear;
+close all;
+clc;
+%% checking data is correct
+% Experimental section 1 data
+exp = readmatrix('section1_data.csv');
+x = exp(:, 1);
+y = exp(:, 3);
+
+% simulation section 1 data
+sim_lo = load('lo1Cpsst.dat');
+sim_up = load('up1Cpsst.dat');
+xlo = sim_lo(:, 1) / 0.8059; % divide by max chord
+cplo = sim_lo(:, 2);
+xup = sim_up(:, 1) / 0.8059; % divide by max chord
+cpup = sim_up(:, 2);
+
+% sort lo
+[xlo_sorted, sID] = sort(xlo);
+cplo_sorted = cplo(sID);
+% sort up
+[xup_sort, sID] = sort(xup);
+cpup_sort = cpup(sID);
+
+%% Plot data onto graph
+fig = figure;
+set(gcf, 'Units', 'pixels', 'Position', [40, 80, 800, 600]);
+tile = tiledlayout(2, 2, 'Padding', 'compact', 'TileSpacing', 'compact');
+
+
+hold on
+plot(x, y, 'LineWidth', 1)
+plot(xlo_sorted, cplo_sorted, 'k-', 'LineWidth', 1)
+plot(xup_sort, cpup_sort, 'k-', 'Linewidth', 1)
+legend({'Experimental', 'k-w SST'}, 'Location','best')
+xlabel('x/C')
+ylabel('C_p')
+grid on
