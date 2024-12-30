@@ -179,7 +179,7 @@ hold on
 plot(x, y, 'LineWidth', 1)
 plot(ke_new_lo, cplo_ke_sort, 'k-', 'LineWidth', 1)
 plot(ke_new_up, cpup_ke_sort, 'k-', 'LineWidth', 1)
-legend(a4, {'Experimental', 'K-\epsilon Standard'}, 'Location','best')
+legend(a4, {'Experimental', 'K-\epsilon Standard'}, 'Location','north')
 xlabel('x/C')
 ylabel('C_p')
 title('Standard k-\epsilon Turbulence Model')
