@@ -7,13 +7,13 @@ clc;
 
 % Extracting and sorting results for section 1 of the airfoil
 % Experimental section 1 data
-exp = readmatrix('section1_data.csv');
+exp = readmatrix('section2_data.csv');
 x = exp(:, 1);
 y = exp(:, 3);
 
 %% k-w sst data
-sst_lo = load('lo1Cpsst.dat');
-sst_up = load('up1Cpsst.dat');
+sst_lo = load('lo2Cpsst.dat');
+sst_up = load('up2Cpsst.dat');
 xsst_lo = sst_lo(:, 1); % divide by max chord
 cplo_sst = sst_lo(:, 2);
 xsst_up = sst_up(:, 1); % divide by max chord
@@ -30,16 +30,16 @@ cpup_sst_sort = cpup_sst(sID);
 lo_min_old = min(sst_lo_sorted);
 lo_max_old = max(sst_lo_sorted);
 new_min = 0;
-new_max = 0.7353; % local chord length based on section
-sst_new_lo = ((sst_lo_sorted - lo_min_old) / (lo_max_old - lo_min_old) * (new_max - new_min) + new_min) / 0.7353; % divide by the max chord to normalize
+new_max = 0.65058; % local chord length based on section
+sst_new_lo = ((sst_lo_sorted - lo_min_old) / (lo_max_old - lo_min_old) * (new_max - new_min) + new_min) / 0.65058; % divide by the max chord to normalize
 % above airfoil
 up_min_old = min(sst_up_sort);
 up_max_old = max(sst_up_sort);
-sst_new_up = ((sst_up_sort - up_min_old) / (up_max_old - up_min_old) * (new_max - new_min) + new_min) / 0.7353;
+sst_new_up = ((sst_up_sort - up_min_old) / (up_max_old - up_min_old) * (new_max - new_min) + new_min) / 0.65058;
 
 %% k-e rng data
-rng_lo = load('lo1Cprng.dat');
-rng_up = load('up1Cprng.dat');
+rng_lo = load('lo2Cprng.dat');
+rng_up = load('up2Cprng.dat');
 xrng_lo = rng_lo(:, 1);
 cplo_rng = rng_lo(:, 2);
 xrng_up = rng_up(:, 1);
@@ -56,14 +56,14 @@ cpup_rng_sort = cpup_rng(rID);
 % below airfoil
 lo_min_oldrng = min(rng_lo_sort);
 lo_max_oldrng = max(rng_lo_sort);
-rng_new_lo = ((rng_lo_sort - lo_min_oldrng) / (lo_max_oldrng - lo_min_oldrng) * (new_max - new_min) + new_min) / 0.7353; % divide by the max chord to normalize
+rng_new_lo = ((rng_lo_sort - lo_min_oldrng) / (lo_max_oldrng - lo_min_oldrng) * (new_max - new_min) + new_min) / 0.65058; % divide by the max chord to normalize
 % above airfoil
 up_min_oldrng = min(rng_up_sort);
 up_max_oldrng = max(rng_up_sort);
-rng_new_up = ((rng_up_sort - up_min_oldrng) / (up_max_oldrng - up_min_oldrng) * (new_max - new_min) + new_min) / 0.7353;
+rng_new_up = ((rng_up_sort - up_min_oldrng) / (up_max_oldrng - up_min_oldrng) * (new_max - new_min) + new_min) / 0.65058;
 %% Spalart-Allmaras data
-sp_lo = load('lo1Cpsp.dat');
-sp_up = load('up1Cpsp.dat');
+sp_lo = load('lo2Cpsp.dat');
+sp_up = load('up2Cpsp.dat');
 xsp_lo = sp_lo(:, 1);
 cplo_sp = sp_lo(:, 2);
 xsp_up = sp_up(:, 1);
@@ -80,14 +80,14 @@ cpup_sp_sort = cpup_sp(spID);
 % below airfoil
 lo_min_oldsp = min(sp_lo_sort);
 lo_max_oldsp = max(sp_lo_sort);
-sp_new_lo = ((sp_lo_sort - lo_min_oldsp) / (lo_max_oldsp - lo_min_oldsp) * (new_max - new_min) + new_min) / 0.7353; % divide by the max chord to normalize
+sp_new_lo = ((sp_lo_sort - lo_min_oldsp) / (lo_max_oldsp - lo_min_oldsp) * (new_max - new_min) + new_min) / 0.65058; % divide by the max chord to normalize
 % above airfoil
 up_min_oldsp = min(sp_up_sort);
 up_max_oldsp = max(sp_up_sort);
-sp_new_up = ((sp_up_sort - up_min_oldsp) / (up_max_oldsp - up_min_oldsp) * (new_max - new_min) + new_min) / 0.7353;
+sp_new_up = ((sp_up_sort - up_min_oldsp) / (up_max_oldsp - up_min_oldsp) * (new_max - new_min) + new_min) / 0.65058;
 %% ke standard data 
-ke_lo = load('lo1Cpke.dat');
-ke_up = load('up1Cpke.dat');
+ke_lo = load('lo2Cpke.dat');
+ke_up = load('up2Cpke.dat');
 xke_lo = ke_lo(:, 1);
 cplo_ke = ke_lo(:, 2);
 xke_up = ke_up(:, 1);
@@ -104,14 +104,14 @@ cpup_ke_sort = cpup_ke(keID);
 % below airfoil
 lo_min_oldke = min(ke_lo_sort);
 lo_max_oldke = max(ke_lo_sort);
-ke_new_lo = ((ke_lo_sort - lo_min_oldke) / (lo_max_oldke - lo_min_oldke) * (new_max - new_min) + new_min) / 0.7353; % divide by the max chord to normalize
+ke_new_lo = ((ke_lo_sort - lo_min_oldke) / (lo_max_oldke - lo_min_oldke) * (new_max - new_min) + new_min) / 0.65058; % divide by the max chord to normalize
 % above airfoil
 up_min_oldke = min(ke_up_sort);
 up_max_oldke = max(ke_up_sort);
-ke_new_up = ((ke_up_sort - up_min_oldke) / (up_max_oldke - up_min_oldke) * (new_max - new_min) + new_min) / 0.7353;
+ke_new_up = ((ke_up_sort - up_min_oldke) / (up_max_oldke - up_min_oldke) * (new_max - new_min) + new_min) / 0.65058;
 %% kw standard data
-kw_lo = load('lo1Cpkw.dat');
-kw_up = load('up1Cpkw.dat');
+kw_lo = load('lo2Cpkw.dat');
+kw_up = load('up2Cpkw.dat');
 xkw_lo = kw_lo(:, 1);
 cplo_kw = kw_lo(:, 2);
 xkw_up = kw_up(:, 1);
@@ -128,11 +128,11 @@ cpup_kw_sort = cpup_kw(kwID);
 % below airfoil
 lo_min_oldkw = min(kw_lo_sort);
 lo_max_oldkw = max(kw_lo_sort);
-kw_new_lo = ((kw_lo_sort - lo_min_oldkw) / (lo_max_oldkw - lo_min_oldkw) * (new_max - new_min) + new_min) / 0.7353; % divide by the max chord to normalize
+kw_new_lo = ((kw_lo_sort - lo_min_oldkw) / (lo_max_oldkw - lo_min_oldkw) * (new_max - new_min) + new_min) / 0.65058; % divide by the max chord to normalize
 % above airfoil
 up_min_oldkw = min(kw_up_sort);
 up_max_oldkw = max(kw_up_sort);
-kw_new_up = ((kw_up_sort - up_min_oldkw) / (up_max_oldkw - up_min_oldkw) * (new_max - new_min) + new_min) / 0.7353;
+kw_new_up = ((kw_up_sort - up_min_oldkw) / (up_max_oldkw - up_min_oldkw) * (new_max - new_min) + new_min) / 0.65058;
 %% Plot data onto stacked figures
 fig1 = figure;
 set(gcf, 'Units', 'pixels', 'Position', [40, 80, 1000, 600]);
@@ -210,7 +210,7 @@ annotation('textbox', [0.40, 0.38, 0.05, 0.05], 'String', '(e)', ...
 
 set(fig1, 'PaperUnits', 'centimeters');
 set(fig1, 'PaperSize', [21 8]);
-saveas(fig1,'sec1vexp.png')
+saveas(fig1,'sec2vexp.png')
 
 
 fig2 = figure;
@@ -230,4 +230,4 @@ legend({'k-\omega SST', '', 'k-\epsilon RNG', '', 'Spalart-Allmaras', '', 'k-\ep
 xlabel('x/C')
 ylabel('C_p')
 grid on
-saveas(fig2, 'sec1_comparison.png')
+saveas(fig2, 'sec2_comparison.png')
