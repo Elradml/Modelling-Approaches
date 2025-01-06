@@ -14,9 +14,9 @@ y = exp(:, 3);
 %% k-w sst data
 sst_lo = load('lo1Cpsst.dat');
 sst_up = load('up1Cpsst.dat');
-xsst_lo = sst_lo(:, 1); % divide by max chord
+xsst_lo = sst_lo(:, 1);
 cplo_sst = sst_lo(:, 2);
-xsst_up = sst_up(:, 1); % divide by max chord
+xsst_up = sst_up(:, 1);
 cpup_sst = sst_up(:, 2);
 
 % sort lo sst
@@ -110,8 +110,8 @@ up_min_oldke = min(ke_up_sort);
 up_max_oldke = max(ke_up_sort);
 ke_new_up = ((ke_up_sort - up_min_oldke) / (up_max_oldke - up_min_oldke) * (new_max - new_min) + new_min) / 0.7353;
 %% kw standard data
-kw_lo = load('lo1Cpkw.dat');
-kw_up = load('up1Cpkw.dat');
+kw_lo = load('lo1Cpbsl.dat');
+kw_up = load('up1Cpbsl.dat');
 xkw_lo = kw_lo(:, 1);
 cplo_kw = kw_lo(:, 2);
 xkw_up = kw_up(:, 1);
@@ -190,10 +190,10 @@ hold on
 plot(x, y, 'LineWidth', 1)
 plot(kw_new_lo, cplo_kw_sort, 'k-', 'LineWidth', 1)
 plot(kw_new_up, cpup_kw_sort, 'k-', 'LineWidth', 1)
-legend(a5, {'Experimental', 'K-\omega Standard'}, 'Location','north')
+legend(a5, {'Experimental', 'K-\omega BST'}, 'Location','north')
 xlabel('x/C')
 ylabel('C_p')
-title('Standard k-\omega Turbulence Model')
+title('k-\omega Baseline Turbulence Model')
 grid on
 
 annotation('textbox', [0.08, 0.85, 0.05, 0.05], 'String', '(a)', ...
@@ -226,7 +226,7 @@ plot(ke_new_up, cpup_ke_sort, 'c-', 'LineWidth', 1)
 plot(kw_new_lo, cplo_kw_sort, 'm--', 'LineWidth', 1)
 plot(kw_new_up, cpup_kw_sort, 'm--', 'LineWidth', 1)
 plot(x, y, 'ko', 'LineWidth', 1)
-legend({'k-\omega SST', '', 'k-\epsilon RNG', '', 'Spalart-Allmaras', '', 'k-\epsilon', '', 'k-\omega', '', 'Experimental'}, 'Location','north')
+legend({'k-\omega SST', '', 'k-\epsilon RNG', '', 'Spalart-Allmaras', '', 'k-\epsilon', '', 'k-\omega BSL', '', 'Experimental'}, 'Location','north')
 xlabel('x/C')
 ylabel('C_p')
 grid on
