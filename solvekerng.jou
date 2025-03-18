@@ -1,0 +1,104 @@
+; setting version of fluent
+/file/set-tui-version "24.2"
+
+; read case setup
+/file/read-case OneraM6_FLUENT.cas OK
+
+;enable energy
+/define/models energy yes no no no yes 
+
+; enable density for compressible solver 
+/define/models/solver density-based-implicit yes q
+
+; set time behaviour
+/define/models/steady yes
+
+;change turbulence Model
+/define/models/viscous ke-rng yes q q
+
+; change Materials
+/define/materials/change-create air air yes ideal-gas no no yes sutherland three-coefficient-method 1.716e-05 273.11 110.56 no no no q q 
+
+; adding Definitions
+/solve/report-definitions/add drag-x drag force-vector 1 0 0 thread-names wall-5() q
+/solve/report-definitions/add drag-y drag force-vector 0 1 0 thread-names wall-5() q
+/solve/report-definitions/add lift-x lift force-vector 1 0 0 thread-names wall-5() q
+/solve/report-definitions/add lift-y lift force-vector 0 1 0 thread-names wall-5() q
+
+/solve/report-file/add drag_y print yes report-defs drag-y () q
+/solve/report-file/add drag_x print yes report-defs drag-x () q
+/solve/report-file/add lift_y print yes report-defs lift-y () q
+/solve/report-file/add lift_x print yes report-defs lift-x () q q q
+
+
+; setting named expressions
+/define/named-expressions/add "AoA_deg" definition 3.06 input-parameter yes q
+/define/named-expressions/add "AoA_rad" definition "AoA_deg*PI/180" q
+/define/named-expressions/add "Mach" definition 0.88 input-parameter yes q
+/define/named-expressions/add "drag_coefficient" definition "cos(AoA_rad) * {drag-x} + sin(AoA_rad) * {drag-y}" output-parameter yes q
+/define/named-expressions/add "lift_coefficient" definition "-sin(AoA_rad) * {lift-x} + cos(AoA_rad) * {lift-y}" output-parameter yes q
+
+; boundary conditions
+/define/boundary-conditions/pressure-far-field pressure-far-field-6 no 0 no "Mach" no 315 yes no "cos(AoA_rad)" no "sin(AoA_rad)" no 0 no yes 0.2 0.002
+
+; reference values 
+/report/reference-values/compute/pressure-far-field pressure-far-field-6 
+/report/reference-values/area 0.7729
+/report/reference-values/length 0.64607
+
+; residuals
+/solve/monitors/residual/check-convergence no no no no no no no
+/solve/convergence-conditions/condition 1 q
+/solve/convergence-conditions/conv-reports/add Drag active yes report-defs "drag-x" stop-criterion 0.001 initial-values-to-ignore 10 previous-values-to-consider 20 print yes q q q q
+
+; adaptive mesh refinement for shock
+/mesh/adapt/predefined-criteria/aerodynamics/shock-indicator/density-based
+
+; initialization
+/solve/initialize hyb-initialization
+
+; run solution
+/solve/iterate 3500
+
+; creating lines to measure cp across above and below the airfoil
+; upper lines
+/surface/line-surface "up-1" 0.7404 0.05 0.23926 0.0052 0.05 0.23926 q
+/surface/line-surface "up-2" 0.8208 0.05 0.526372 0.17022 0.05 0.526372 q
+/surface/line-surface "up-3" 0.89115 0.05 0.777595 0.3147 0.05 0.777595 q
+/surface/line-surface "up-4" 0.9414 0.05 0.95704 0.4179 0.05 0.95704 q
+/surface/line-surface "up-5" 0.9749 0.05 1.07667 0.4867 0.05 1.07667 q
+/surface/line-surface "up-6" 0.99165 0.05 1.136485 0.5211 0.05 1.136485 q
+/surface/line-surface "up-7" 1.00505 0.05 1.184337 0.54862 0.05 1.184337 q
+
+; lower
+/surface/line-surface "lo-1" 0.7404 -0.03 0.23926 0.0052 -0.03 0.23926 q
+/surface/line-surface "lo-2" 0.8208 -0.03 0.526372 0.17022 -0.03 0.526372 q
+/surface/line-surface "lo-3" 0.89115 -0.03 0.777595 0.3147 -0.03 0.777595 q
+/surface/line-surface "lo-4" 0.9414 -0.03 0.95704 0.4179 -0.03 0.95704 q
+/surface/line-surface "lo-5" 0.9749 -0.03 1.07667 0.4867 -0.03 1.07667 q
+/surface/line-surface "lo-6" 0.99165 -0.03 1.136485 0.5211 -0.03 1.136485 q
+/surface/line-surface "lo-7" 1.00505 -0.03 1.184337 0.54862 -0.03 1.184337 q
+
+; plot pressure coefficient across generated lines
+; uppper
+/plot/plot yes "up1Cp.dat" no no no pressure-coefficient yes 1 0 0 up-1 () q
+/plot/plot yes "up2Cp.dat" no no no pressure-coefficient yes 1 0 0 up-2 () q
+/plot/plot yes "up3Cp.dat" no no no pressure-coefficient yes 1 0 0 up-3 () q
+/plot/plot yes "up4Cp.dat" no no no pressure-coefficient yes 1 0 0 up-4 () q
+/plot/plot yes "up5Cp.dat" no no no pressure-coefficient yes 1 0 0 up-5 () q
+/plot/plot yes "up6Cp.dat" no no no pressure-coefficient yes 1 0 0 up-6 () q
+/plot/plot yes "up7Cp.dat" no no no pressure-coefficient yes 1 0 0 up-7 () q
+
+; lower
+/plot/plot yes "lo1Cp.dat" no no no pressure-coefficient yes 1 0 0 lo-1 () q
+/plot/plot yes "lo2Cp.dat" no no no pressure-coefficient yes 1 0 0 lo-2 () q
+/plot/plot yes "lo3Cp.dat" no no no pressure-coefficient yes 1 0 0 lo-3 () q
+/plot/plot yes "lo4Cp.dat" no no no pressure-coefficient yes 1 0 0 lo-4 () q
+/plot/plot yes "lo5Cp.dat" no no no pressure-coefficient yes 1 0 0 lo-5 () q
+/plot/plot yes "lo6Cp.dat" no no no pressure-coefficient yes 1 0 0 lo-6 () q
+/plot/plot yes "lo7Cp.dat" no no no pressure-coefficient yes 1 0 0 lo-7 () q
+
+
+; output case and data for post processing
+/file/write-case OneraM6_FLUENTrng.cas
+/file/write-data OneraM6_FLUENTrng.dat
